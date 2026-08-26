@@ -1,0 +1,26 @@
+WEEK 5 - BITBUCKET / GIT COMMAND PRACTICE
+
+# Clone repository
+git clone <repository-url>
+
+# Check status
+git status
+
+# Create a branch
+git checkout -b week5-practice
+
+# Stage and commit
+git add .
+git commit -m "Add Week 5 industry tools notes"
+
+# Push branch
+git push -u origin week5-practice
+
+# Update local branch
+git pull
+
+# View history
+git log --oneline
+
+# Typical Bitbucket UI action after push
+Create Pull Request -> Review -> Approve -> Merge
