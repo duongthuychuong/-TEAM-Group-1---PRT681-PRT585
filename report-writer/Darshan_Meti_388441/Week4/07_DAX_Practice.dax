@@ -1,0 +1,25 @@
+-- WEEK 4 - DAX PRACTICE MEASURES
+
+Total Sales =
+SUMX(Sales, Sales[Quantity] * Sales[UnitPrice])
+
+Total Cost =
+SUMX(Sales, Sales[Quantity] * Sales[UnitCost])
+
+Total Profit =
+[Total Sales] - [Total Cost]
+
+Profit Margin % =
+DIVIDE([Total Profit], [Total Sales], 0)
+
+Order Count =
+DISTINCTCOUNT(Sales[OrderID])
+
+Average Order Value =
+DIVIDE([Total Sales], [Order Count], 0)
+
+Sales Previous Month =
+CALCULATE([Total Sales], DATEADD('Date'[Date], -1, MONTH))
+
+Sales MoM % =
+DIVIDE([Total Sales] - [Sales Previous Month], [Sales Previous Month], 0)
