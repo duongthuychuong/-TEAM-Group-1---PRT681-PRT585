@@ -1,0 +1,21 @@
+WEEK 1 - TOOL INSTALLATION AND SETUP LOG
+Student: Darshan | ID: S388441
+
+1. Visual Studio
+- Installed Visual Studio.
+- Opened the IDE and reviewed project/start window.
+- Identified solution/project structure and build/debug areas.
+
+2. Visual Studio Code
+- Installed VS Code.
+- Reviewed Extensions, Explorer, Source Control and Terminal panels.
+- Confirmed a folder can be opened as a workspace.
+
+3. Git / GitHub preparation
+- Reviewed Git workflow: clone/init -> add -> commit -> push.
+- Prepared repository folders for weekly learning evidence.
+
+Suggested real evidence to attach later:
+- Screenshot of Visual Studio start screen.
+- Screenshot of VS Code with repository folder open.
+- Screenshot of GitHub repository page and first commit.
