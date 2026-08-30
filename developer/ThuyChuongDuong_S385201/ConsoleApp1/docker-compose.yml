@@ -1,0 +1,8 @@
+services:
+    sqlite:
+        image: keinos/sqlite3:latest
+        container_name: tasks-db
+        working_dir: /data
+        volumes:
+            - ./db:/data
+        command: tail -f /dev/null
