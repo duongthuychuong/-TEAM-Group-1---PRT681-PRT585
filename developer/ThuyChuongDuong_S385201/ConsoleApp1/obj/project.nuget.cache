@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "dgSpecHash": "MagfIcdqLtk=",
+  "success": true,
+  "projectFilePath": "/Users/peanut/Library/CloudStorage/OneDrive-CharlesDarwinUniversity/F2-S2/Software Practice/Console App week 1/ConsoleApp1/ConsoleApp1.csproj",
+  "expectedPackageFiles": [
+    "/Users/peanut/.nuget/packages/microsoft.data.sqlite/9.0.0/microsoft.data.sqlite.9.0.0.nupkg.sha512",
+    "/Users/peanut/.nuget/packages/microsoft.data.sqlite.core/9.0.0/microsoft.data.sqlite.core.9.0.0.nupkg.sha512",
+    "/Users/peanut/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.10/sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
+    "/Users/peanut/.nuget/packages/sqlitepclraw.core/2.1.10/sqlitepclraw.core.2.1.10.nupkg.sha512",
+    "/Users/peanut/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.10/sqlitepclraw.lib.e_sqlite3.2.1.10.nupkg.sha512",
+    "/Users/peanut/.nuget/packages/sqlitepclraw.provider.e_sqlite3/2.1.10/sqlitepclraw.provider.e_sqlite3.2.1.10.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.10 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q",
+      "projectPath": "/Users/peanut/Library/CloudStorage/OneDrive-CharlesDarwinUniversity/F2-S2/Software Practice/Console App week 1/ConsoleApp1/ConsoleApp1.csproj",
+      "warningLevel": 1,
+      "filePath": "/Users/peanut/Library/CloudStorage/OneDrive-CharlesDarwinUniversity/F2-S2/Software Practice/Console App week 1/ConsoleApp1/ConsoleApp1.csproj",
+      "libraryId": "SQLitePCLRaw.lib.e_sqlite3",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}
