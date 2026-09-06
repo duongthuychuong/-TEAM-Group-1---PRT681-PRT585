@@ -1,0 +1,23 @@
+# Build output
+bin/
+obj/
+
+# Local database files
+tasks.db
+*.db-shm
+*.db-wal
+db/azure-sql-edge/
+
+# IDE and OS files
+.DS_Store
+.vs/
+*.user
+*.suo
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log

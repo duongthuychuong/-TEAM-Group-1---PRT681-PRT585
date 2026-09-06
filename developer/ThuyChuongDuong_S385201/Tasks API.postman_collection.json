@@ -1,0 +1,102 @@
+{
+    "info": {
+        "_postman_id": "3d3c20f0-9c0e-4d66-9f7d-1c1b2e3b7a01",
+        "name": "Tasks API",
+        "description": "Postman requests for the ASP.NET Core Tasks API.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:5000",
+            "type": "string"
+        },
+        {
+            "key": "taskId",
+            "value": "00000000-0000-0000-0000-000000000000",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Health check",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/api/health",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "health"]
+                }
+            }
+        },
+        {
+            "name": "List tasks",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/api/tasks",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "tasks"]
+                }
+            }
+        },
+        {
+            "name": "Add task",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test('Created successfully', function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "const task = pm.response.json();",
+                            "if (task.id) {",
+                            "    pm.collectionVariables.set('taskId', task.id);",
+                            "}"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"title\": \"Test task from Postman\",\n  \"description\": \"Created through the Tasks API\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/api/tasks",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "tasks"]
+                }
+            }
+        },
+        {
+            "name": "Delete task",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "tasks", "{{taskId}}"]
+                }
+            }
+        }
+    ]
+}

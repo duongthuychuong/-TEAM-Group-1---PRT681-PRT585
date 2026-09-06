@@ -1,0 +1,24 @@
+services:
+    azure-sql-edge:
+        image: mcr.microsoft.com/azure-sql-edge:latest
+        container_name: tasks-sql-edge
+        platform: linux/arm64
+        environment:
+            ACCEPT_EULA: "Y"
+            MSSQL_SA_PASSWORD: "TaskManager!Dev123"
+            MSSQL_PID: Developer
+            MSSQL_AGENT_ENABLED: "TRUE"
+            MSSQL_TELEMETRY_ENABLED: "FALSE"
+        ports:
+            - "1433:1433"
+        volumes:
+            - azure-sql-edge-data:/var/opt/mssql
+        healthcheck:
+            test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/1433'"]
+            interval: 10s
+            timeout: 5s
+            retries: 20
+            start_period: 20s
+
+volumes:
+    azure-sql-edge-data:
