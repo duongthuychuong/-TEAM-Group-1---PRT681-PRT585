@@ -58,7 +58,6 @@ app.MapDelete("/api/tasks/{id:guid}", async (Guid id, TasksDbContext db) =>
     return Results.NoContent();
 });
 
-app.MapGet("/api/health", () => Results.Ok(new { status = "ok" }));
 app.Run();
 
 static async Task EnsureDatabaseExists(string connectionString)
