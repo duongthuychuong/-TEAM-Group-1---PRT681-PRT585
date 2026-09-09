@@ -24,6 +24,7 @@ FROM dbo.Orders;
    ========================================================= */
 
 SELECT
+
     SUM(Sales) AS TotalSales
 FROM dbo.Orders;
 
