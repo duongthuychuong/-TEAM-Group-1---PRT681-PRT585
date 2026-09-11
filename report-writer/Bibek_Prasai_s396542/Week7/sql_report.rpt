@@ -1,0 +1,67 @@
+﻿STATUS                                             NumberOfBores
+-------------------------------------------------- -------------
+Current                                            35504
+Historical                                         7721
+
+(2 rows affected)
+
+PURPOSE                                                                                              NumberOfBores
+---------------------------------------------------------------------------------------------------- -------------
+Production                                                                                           24003
+Unknown                                                                                              7612
+Investigation                                                                                        5887
+NULL                                                                                                 3920
+Monitoring                                                                                           1803
+
+(5 rows affected)
+
+RISK_CLASS                              NumberOfBores
+--------------------------------------- -------------
+0.0                                     3921
+1.0                                     14693
+2.0                                     6857
+3.0                                     12519
+4.0                                     5235
+
+(5 rows affected)
+
+YIELDCLASS                                         NumberOfBores
+-------------------------------------------------- -------------
+0 L/s                                              17720
+>2.0 - 5.0 L/s                                     7845
+>0.0 - 1.0 L/s                                     6820
+>1.0 - 2.0 L/s                                     5878
+>5.0 - 10.0 L/s                                    3221
+>10 L/s                                            1741
+
+(6 rows affected)
+
+AverageYield                            MinimumYield                            MaximumYield
+--------------------------------------- --------------------------------------- ---------------------------------------
+3.433125                                0.00                                    1140.00
+
+(1 row affected)
+
+AverageDrillDepth                       MinimumDrillDepth                       MaximumDrillDepth
+--------------------------------------- --------------------------------------- ---------------------------------------
+62.061267                               0.00                                    3840.20
+
+(1 row affected)
+
+UFI         BORE_NO                                            BORE_NAME                                                                                                                                                                                                                                                       YIELD                                   YIELDCLASS                                         STATUS                                             PURPOSE
+----------- -------------------------------------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- --------------------------------------- -------------------------------------------------- -------------------------------------------------- ----------------------------------------------------------------------------------------------------
+17779       RN018480                                           Road Bore Arid Gold Farm NTP 415                                                                                                                                                                                                                                1140.00                                 >2.0 - 5.0 L/s                                     Current                                            Production
+7600        RN007929                                           SITE E ADV.23/72 BILLENGARAH STN                                                                                                                                                                                                                                256.00                                  0 L/s                                              Current                                            Production
+18321       RN019054                                           AA Minerals Production Bore Mount Riddock Station                                                                                                                                                                                                               205.00                                  >1.0 - 2.0 L/s                                     Current                                            Production
+36465       RN037813                                           T.F.S. Lease (B.J. & S.P. Gill)                                                                                                                                                                                                                                 200.00                                  >10 L/s                                            Current                                            Production
+42873       RN045030                                           NT Portion 2534 Blackbull Station                                                                                                                                                                                                                               150.00                                  >10 L/s                                            Current                                            NULL
+42875       RN045032                                           NT Portion 2534 Blackbull Station                                                                                                                                                                                                                               150.00                                  >10 L/s                                            Current                                            NULL
+6181        RN006464                                           NO.2 FARM "E" BORE TIPPERARY STATION                                                                                                                                                                                                                            125.00                                  >10 L/s                                            Historical                                         Production
+6184        RN006467                                           NO.2 FARM  BORE "C" TIPPERARY STATION                                                                                                                                                                                                                           125.00                                  0 L/s                                              Historical                                         Production
+4693        RN004942                                           SHADY CAMP NO 4 ROSEWOOD STN                                                                                                                                                                                                                                    120.60                                  >1.0 - 2.0 L/s                                     Current                                            Production
+35946       RN037278                                           P.R. KIRKPATRICK (K. SING)                                                                                                                                                                                                                                      104.00                                  >5.0 - 10.0 L/s                                    Current                                            Production
+
+(10 rows affected)
+
+
+Completion time: 2026-09-11T17:00:06.5964225+09:30
