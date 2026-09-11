@@ -1,0 +1,56 @@
+USE PRT681_Groundwater;
+
+-- 1. GROUNDWATER LEVEL RECORD COUNT
+SELECT
+    COUNT(*) AS TotalStations,
+    COUNT(DISTINCT UFI) AS UniqueUFIs
+FROM Groundwater_Level;
+
+
+-- 2. CURRENT VS NOT CURRENT
+SELECT
+    ACTIVE,
+    COUNT(*) AS StationCount
+FROM Groundwater_Level
+GROUP BY ACTIVE
+ORDER BY StationCount DESC;
+
+
+-- 3. MONITORING TYPE
+SELECT
+    MONITOR_TY,
+    COUNT(*) AS StationCount
+FROM Groundwater_Level
+GROUP BY MONITOR_TY
+ORDER BY StationCount DESC;
+
+
+-- 4. EARLIEST AND LATEST COMMENCE DATES
+SELECT
+    MIN(COMMENCE) AS EarliestCommence,
+    MAX(COMMENCE) AS LatestCommence
+FROM Groundwater_Level
+WHERE COMMENCE IS NOT NULL;
+
+
+-- 5. STATIONS BY GRDATUM
+SELECT
+    GRDATUM,
+    COUNT(*) AS StationCount
+FROM Groundwater_Level
+GROUP BY GRDATUM
+ORDER BY StationCount DESC;
+
+
+-- 6. SAMPLE GROUNDWATER MONITORING STATIONS
+SELECT TOP 10
+    UFI,
+    STATION,
+    STATION_NA,
+    ACTIVE,
+    COMMENCE,
+    CEASE,
+    LATITUDE,
+    LONGITUDE
+FROM Groundwater_Level
+ORDER BY UFI;
