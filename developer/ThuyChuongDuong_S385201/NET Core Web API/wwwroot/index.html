@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A simple task manager powered by Vue and ASP.NET Core.">
+    <title>Taskflow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js" defer></script>
+    <script src="/app.js" defer></script>
+</head>
+<body>
+    <main id="app" v-cloak>
+        <header class="site-header">
+            <a class="brand" href="/" aria-label="Taskflow home">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img">
+                        <path d="m7.5 12 3 3 6-7"></path>
+                    </svg>
+                </span>
+                Taskflow
+            </a>
+            <span class="date-label">{{ today }}</span>
+        </header>
+
+        <section class="hero">
+            <p class="eyebrow">Your day, in focus</p>
+            <h1>Make room for what matters.</h1>
+            <p class="hero-copy">Capture your next step, keep momentum, and enjoy the calm of a clear list.</p>
+        </section>
+
+        <section class="workspace" aria-label="Task manager">
+            <form class="task-form" @submit.prevent="addTask">
+                <div class="field-group">
+                    <label for="task-title">What needs doing?</label>
+                    <input
+                        id="task-title"
+                        v-model.trim="form.title"
+                        maxlength="200"
+                        placeholder="Add a task..."
+                        autocomplete="off"
+                        :disabled="saving"
+                        required>
+                </div>
+                <div class="form-row">
+                    <div class="field-group description-field">
+                        <label class="sr-only" for="task-description">Description</label>
+                        <input
+                            id="task-description"
+                            v-model.trim="form.description"
+                            placeholder="Add a note (optional)"
+                            :disabled="saving">
+                    </div>
+                    <button class="primary-button" type="submit" :disabled="saving || !form.title">
+                        <span aria-hidden="true">+</span>
+                        {{ saving ? 'Adding...' : 'Add task' }}
+                    </button>
+                </div>
+            </form>
+
+            <div class="list-panel">
+                <div class="list-header">
+                    <div>
+                        <p class="list-kicker">My tasks</p>
+                        <h2>{{ remainingCount }} {{ remainingCount === 1 ? 'task' : 'tasks' }} left</h2>
+                    </div>
+                    <div class="filters" aria-label="Filter tasks">
+                        <button
+                            v-for="option in filters"
+                            :key="option.value"
+                            type="button"
+                            :class="{ active: filter === option.value }"
+                            @click="filter = option.value">
+                            {{ option.label }}
+                        </button>
+                    </div>
+                </div>
+
+                <div v-if="error" class="alert" role="alert">
+                    <span>{{ error }}</span>
+                    <button type="button" @click="loadTasks">Try again</button>
+                </div>
+
+                <div v-if="loading" class="loading-state" aria-live="polite">
+                    <span class="spinner" aria-hidden="true"></span>
+                    Loading tasks...
+                </div>
+
+                <ul v-else-if="filteredTasks.length" class="task-list">
+                    <li v-for="task in filteredTasks" :key="task.id" :class="{ completed: task.isCompleted }">
+                        <label class="check-control" :aria-label="`Mark ${task.title} as ${task.isCompleted ? 'active' : 'complete'}`">
+                            <input
+                                type="checkbox"
+                                :checked="task.isCompleted"
+                                :disabled="busyIds.has(task.id)"
+                                @change="toggleTask(task, $event.target.checked)">
+                            <span class="custom-check" aria-hidden="true">
+                                <svg viewBox="0 0 16 16"><path d="m3.5 8 3 3 6-7"></path></svg>
+                            </span>
+                        </label>
+                        <div class="task-content">
+                            <p class="task-title">{{ task.title }}</p>
+                            <p v-if="task.description" class="task-description">{{ task.description }}</p>
+                            <p class="task-meta">Added {{ formatDate(task.createdAt) }}</p>
+                        </div>
+                        <button
+                            class="delete-button"
+                            type="button"
+                            :disabled="busyIds.has(task.id)"
+                            :aria-label="`Delete ${task.title}`"
+                            @click="deleteTask(task)">
+                            Delete
+                        </button>
+                    </li>
+                </ul>
+
+                <div v-else class="empty-state">
+                    <span class="empty-mark" aria-hidden="true">✓</span>
+                    <h3>{{ emptyMessage.title }}</h3>
+                    <p>{{ emptyMessage.body }}</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <noscript>This task manager needs JavaScript enabled.</noscript>
+</body>
+</html>

@@ -1,11 +1,35 @@
 services:
+    frontend:
+        build:
+            context: .
+            dockerfile: Dockerfile.frontend
+        container_name: tasks-frontend
+        ports:
+            - "8080:80"
+        depends_on:
+            - api
+
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile.api
+        container_name: tasks-api
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            TASKS_CONNECTION_STRING: "Server=azure-sql-edge,1433;Database=TasksDb;User Id=sa;Password=${MSSQL_SA_PASSWORD:-TaskManager!Dev123};TrustServerCertificate=True;"
+        ports:
+            - "5080:8080"
+        depends_on:
+            azure-sql-edge:
+                condition: service_healthy
+
     azure-sql-edge:
         image: mcr.microsoft.com/azure-sql-edge:latest
         container_name: tasks-sql-edge
         platform: linux/arm64
         environment:
             ACCEPT_EULA: "Y"
-            MSSQL_SA_PASSWORD: "TaskManager!Dev123"
+            MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:-TaskManager!Dev123}"
             MSSQL_PID: Developer
             MSSQL_AGENT_ENABLED: "TRUE"
             MSSQL_TELEMETRY_ENABLED: "FALSE"

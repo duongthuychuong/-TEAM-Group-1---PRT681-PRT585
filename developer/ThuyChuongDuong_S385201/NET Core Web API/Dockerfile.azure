@@ -1,0 +1,33 @@
+# Run the SDK on the Docker host's native architecture and cross-publish for
+# the requested target. This avoids QEMU/MSBuild failures on Apple Silicon.
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+ARG TARGETARCH
+
+WORKDIR /src
+
+COPY ConsoleApp1.csproj ./
+RUN dotnet restore ConsoleApp1.csproj --arch $TARGETARCH
+
+COPY Program.cs ./
+COPY Data/ ./Data/
+COPY Models/ ./Models/
+COPY wwwroot/ ./wwwroot/
+
+RUN dotnet publish ConsoleApp1.csproj \
+    --configuration Release \
+    --arch $TARGETARCH \
+    --output /app/publish \
+    --no-restore \
+    /p:UseAppHost=false
+
+# App Service only needs the smaller ASP.NET runtime image.
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+
+WORKDIR /app
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
+
+COPY --from=build /app/publish ./
+
+ENTRYPOINT ["dotnet", "TasksApi.dll"]
