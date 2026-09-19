@@ -7,9 +7,6 @@ import math
 # --------------------------------------------------
 shapefile = r"C:\Users\prasa\MIT\Trimester 3\PRT681\-TEAM-Group-1---PRT681-PRT585\report-writer\Bibek_Prasai_s396542\Week7\Bores.shp"
 
-# --------------------------------------------------
-# READ SHAPEFILE
-# --------------------------------------------------
 print("Reading Bores.shp...")
 
 gdf = gpd.read_file(shapefile)
@@ -17,7 +14,7 @@ gdf = gpd.read_file(shapefile)
 print(f"Rows found: {len(gdf)}")
 
 # --------------------------------------------------
-# CONNECT TO SQL SERVER
+# SQL SERVER CONNECTION
 # --------------------------------------------------
 print("Connecting to SQL Server...")
 
@@ -32,7 +29,7 @@ conn = pyodbc.connect(
 cursor = conn.cursor()
 
 # --------------------------------------------------
-# SQL INSERT
+# INSERT STATEMENT
 # --------------------------------------------------
 insert_sql = """
 INSERT INTO Bores (
@@ -75,84 +72,182 @@ VALUES (
 """
 
 # --------------------------------------------------
-# CLEAN VALUES
+# CLEAN FUNCTIONS
 # --------------------------------------------------
-def clean(value):
+
+def clean_text(value):
+    if value is None:
+        return None
+
+    try:
+        if isinstance(value, float) and math.isnan(value):
+            return None
+    except:
+        pass
+
+    return str(value)
+
+
+def clean_int(value):
     if value is None:
         return None
 
     try:
         if math.isnan(value):
             return None
-    except (TypeError, ValueError):
+    except:
         pass
 
-    return value
+    return int(value)
+
+
+def clean_decimal(value):
+    if value is None:
+        return None
+
+    try:
+        if math.isnan(value):
+            return None
+    except:
+        pass
+
+    return float(value)
+
+
+def clean_bit(value):
+    if value is None:
+        return None
+
+    try:
+        if math.isnan(value):
+            return None
+    except:
+        pass
+
+    return bool(value)
+
 
 # --------------------------------------------------
 # BUILD ROWS
 # --------------------------------------------------
+
 rows = []
 
 for _, row in gdf.iterrows():
 
     values = (
-        clean(row["UFI"]),
-        clean(row["BORE_NO"]),
-        clean(row["BORE_NAME"]),
-        clean(row["BOREREPORT"]),
-        clean(row["DRY_RISK"]),
-        clean(row["RISK_CLASS"]),
-        clean(row["ASSESSYEAR"]),
-        clean(row["GWRESOURCE"]),
-        clean(row["OWNER_INFO"]),
-        clean(row["WATER_DATA"]),
-        clean(row["STATUS"]),
-        clean(row["STATUSCONS"]),
-        clean(row["PURPOSE"]),
-        clean(row["MONITORED"]),
-        clean(row["YIELD"]),
-        clean(row["YIELDCLASS"]),
-        clean(row["COMPL_DATE"]),
-        clean(row["COMPLDEPTH"]),
-        clean(row["DRILLDEPTH"]),
-        clean(row["WATERLEVEL"]),
-        clean(row["TESTDATE"]),
-        clean(row["TESTTYPE"]),
-        clean(row["GAMMA"]),
-        clean(row["LOCALITY"]),
-        clean(row["POSACC"]),
-        clean(row["LATITUDE"]),
-        clean(row["LONGITUDE"]),
-        clean(row["UTM_ZONE"]),
-        clean(row["EASTING"]),
-        clean(row["NORTHING"]),
-        clean(row["ASSESS_ACT"])
+        # 1 UFI
+        clean_int(row["UFI"]),
+
+        # 2-5 text
+        clean_text(row["BORE_NO"]),
+        clean_text(row["BORE_NAME"]),
+        clean_text(row["BOREREPORT"]),
+        clean_text(row["DRY_RISK"]),
+
+        # 6 numeric
+        clean_decimal(row["RISK_CLASS"]),
+
+        # 7 integer
+        clean_int(row["ASSESSYEAR"]),
+
+        # 8-14 text
+        clean_text(row["GWRESOURCE"]),
+        clean_text(row["OWNER_INFO"]),
+        clean_text(row["WATER_DATA"]),
+        clean_text(row["STATUS"]),
+        clean_text(row["STATUSCONS"]),
+        clean_text(row["PURPOSE"]),
+        clean_text(row["MONITORED"]),
+
+        # 15 numeric
+        clean_decimal(row["YIELD"]),
+
+        # 16-17 text
+        clean_text(row["YIELDCLASS"]),
+        clean_text(row["COMPL_DATE"]),
+
+        # 18-20 numeric
+        clean_decimal(row["COMPLDEPTH"]),
+        clean_decimal(row["DRILLDEPTH"]),
+        clean_decimal(row["WATERLEVEL"]),
+
+        # 21-22 text
+        clean_text(row["TESTDATE"]),
+        clean_text(row["TESTTYPE"]),
+
+        # 23 bit
+        clean_bit(row["GAMMA"]),
+
+        # 24-25 text
+        clean_text(row["LOCALITY"]),
+        clean_text(row["POSACC"]),
+
+        # 26-27 numeric
+        clean_decimal(row["LATITUDE"]),
+        clean_decimal(row["LONGITUDE"]),
+
+        # 28 integer
+        clean_int(row["UTM_ZONE"]),
+
+        # 29-30 numeric
+        clean_decimal(row["EASTING"]),
+        clean_decimal(row["NORTHING"]),
+
+        # 31 bit
+        clean_bit(row["ASSESS_ACT"])
     )
 
     rows.append(values)
 
+
 # --------------------------------------------------
-# INSERT IN BATCHES
+# IMPORT IN BATCHES
 # --------------------------------------------------
+
 batch_size = 1000
 
 for start in range(0, len(rows), batch_size):
 
     batch = rows[start:start + batch_size]
 
-    cursor.executemany(insert_sql, batch)
-    conn.commit()
+    try:
+        cursor.executemany(insert_sql, batch)
+        conn.commit()
 
-    print(f"Inserted {min(start + batch_size, len(rows))} / {len(rows)} records...")
+        print(
+            f"Inserted "
+            f"{min(start + batch_size, len(rows))} / "
+            f"{len(rows)} records..."
+        )
+
+    except Exception as e:
+
+        conn.rollback()
+
+        print("\nIMPORT FAILED")
+        print(f"Batch starting at row: {start}")
+        print(f"Error: {e}")
+
+        # Show the first row of the failed batch
+        print("\nFirst row in failed batch:")
+        for i, value in enumerate(batch[0], start=1):
+            print(f"{i}: {value!r}")
+
+        cursor.close()
+        conn.close()
+
+        raise
+
 
 # --------------------------------------------------
-# CLOSE
+# FINISH
 # --------------------------------------------------
+
 cursor.close()
 conn.close()
 
-print("================================")
+print("\n================================")
 print("Bores import completed.")
 print(f"Total records imported: {len(rows)}")
 print("================================")
