@@ -1,0 +1,14 @@
+{
+  "title": "The Outback F&B Service",
+  "description": "Fresh food, big flavour — Vietnamese favourites made with fresh Australian ingredients.",
+  "language": "en",
+  "icons": {
+    "icon": "/src/imports/optimized/favicon.png"
+  },
+  "robots": {
+    "index": true
+  },
+  "accessibility": {
+    "addBypassLinks": true
+  }
+}

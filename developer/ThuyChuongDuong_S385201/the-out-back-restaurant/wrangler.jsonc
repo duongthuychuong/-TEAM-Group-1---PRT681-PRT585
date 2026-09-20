@@ -1,0 +1,40 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "the-outback-fnb-service",
+  "main": "./worker/index.js",
+  "compatibility_date": "2026-09-16",
+  "workers_dev": true,
+  "preview_urls": true,
+  "routes": [
+    {
+      "pattern": "theoutbackfnb.com",
+      "zone_name": "theoutbackfnb.com",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "secrets": {
+    "required": ["ADMIN_PASSWORD"]
+  },
+  "vars": {
+    "CATERING_EMAIL_TO": "admin@theoutbackfnb.com"
+  },
+  "send_email": [
+    {
+      "name": "CATERING_EMAIL",
+      "destination_address": "admin@theoutbackfnb.com",
+      "remote": true
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MENU_IMAGES",
+      "bucket_name": "outback-menu-images"
+    }
+  ]
+}
