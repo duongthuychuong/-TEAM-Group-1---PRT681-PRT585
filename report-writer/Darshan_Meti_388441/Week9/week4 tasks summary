@@ -1,0 +1,28 @@
+* Created a **Microsoft Fabric Lakehouse** for Week 4 spatial reporting.
+* Uploaded an **NT geographic CSV dataset** containing Region, Postcode, Latitude, Longitude, Sales, Profit, Orders, and performance fields.
+* Converted the CSV into a structured **Delta table** in Fabric.
+* Created a **semantic model** from the Fabric Lakehouse data.
+* Connected the semantic model to **Power BI** for reporting.
+* Built an **ArcGIS geospatial map** using latitude and longitude coordinates.
+* Created KPI measures for:
+
+  * Total Sales
+  * Total Profit
+  * Total Orders
+  * Profit Margin %
+  * Sales YTD
+* Created a **Date Table** for time-based analysis.
+* Built advanced DAX measures for:
+
+  * Previous Month Sales
+  * Month-over-Month Sales Change %
+  * Year-to-Date Sales
+* Added a **monthly sales trend chart**.
+* Added a **Sales by Region** comparison chart.
+* Added interactive slicers for:
+
+  * Region
+  * Month
+  * Territory Performance
+* Used geographic and performance data together to create an **interactive NT Spatial Performance Dashboard**.
+* Learned how **Microsoft Fabric, Direct Lake concepts, geospatial mapping, DAX time intelligence, and Power BI** can work together in an end-to-end reporting solution.
