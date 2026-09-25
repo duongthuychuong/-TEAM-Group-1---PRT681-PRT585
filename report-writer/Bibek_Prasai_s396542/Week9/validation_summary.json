@@ -1,0 +1,80 @@
+{
+  "repo": "SDataPro/maycee-retail-dataset",
+  "source_dir": "C:\\Users\\hienp\\Documents\\SData_docs\\sdata_projects\\maycee_retail_dataset\\v1.0\\output\\huggingface\\free_v1_0",
+  "build_dir": "C:\\Users\\hienp\\AppData\\Local\\Temp\\maycee_hf_publish_lijpuaf2",
+  "partition_summary": {
+    "first": "2017-01-01",
+    "last": "2019-12-31",
+    "partition_count": 1095
+  },
+  "date_dim_summary": {
+    "rows": 1095,
+    "first": "2017-01-01",
+    "last": "2019-12-31"
+  },
+  "row_counts": {
+    "regions": 8,
+    "districts": 35,
+    "suppliers": 20,
+    "brands": 37,
+    "categories": 36,
+    "customers": 3157,
+    "stores": 16,
+    "products": 342,
+    "promotions": 45,
+    "date_dim": 1095,
+    "transactions": 164968,
+    "items": 420016,
+    "returns": 8762
+  },
+  "shards": {
+    "regions": 1,
+    "districts": 1,
+    "suppliers": 1,
+    "brands": 1,
+    "categories": 1,
+    "customers": 1,
+    "stores": 1,
+    "products": 1,
+    "promotions": 1,
+    "date_dim": 1,
+    "transactions": 1,
+    "items": 1,
+    "returns": 1
+  },
+  "files": [
+    "README.md",
+    "data/brands/train-0.parquet",
+    "data/categories/train-0.parquet",
+    "data/customers/train-0.parquet",
+    "data/date_dim/train-0.parquet",
+    "data/districts/train-0.parquet",
+    "data/items/train-00000.parquet",
+    "data/products/train-0.parquet",
+    "data/promotions/train-0.parquet",
+    "data/regions/train-0.parquet",
+    "data/returns/train-00000.parquet",
+    "data/stores/train-0.parquet",
+    "data/suppliers/train-0.parquet",
+    "data/transactions/train-00000.parquet"
+  ],
+  "blocked_path_tokens": [
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026",
+    "ai_eval",
+    "gold_sql",
+    "hidden_eval",
+    "licence",
+    "license",
+    "manifest",
+    "model_report",
+    "ops",
+    "secret"
+  ],
+  "status": "PASS"
+}
