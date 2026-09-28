@@ -1,26 +1,39 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+ARG TARGETARCH
 
 WORKDIR /src
 
 COPY ConsoleApp1.csproj ./
-RUN dotnet restore ConsoleApp1.csproj
+RUN dotnet restore ConsoleApp1.csproj --runtime linux-musl-$TARGETARCH
 
 COPY Program.cs ./
+COPY appsettings.json ./
 COPY Data/ ./Data/
+COPY Email/ ./Email/
+COPY Health/ ./Health/
 COPY Models/ ./Models/
+COPY Workflows/ ./Workflows/
 
 RUN dotnet publish ConsoleApp1.csproj \
     --configuration Release \
+    --runtime linux-musl-$TARGETARCH \
     --output /app/publish \
     --no-restore \
     /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS runtime
+
+RUN apk add --no-cache icu-libs
 
 WORKDIR /app
-ENV ASPNETCORE_URLS=http://+:8080
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 EXPOSE 8080
 
 COPY --from=build /app/publish ./
+
+USER $APP_UID
+HEALTHCHECK --interval=10s --timeout=3s --start-period=20s --retries=5 \
+    CMD wget -q -O - http://127.0.0.1:8080/health/ready || exit 1
 
 ENTRYPOINT ["dotnet", "TasksApi.dll"]

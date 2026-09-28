@@ -7,7 +7,8 @@ services:
         ports:
             - "8080:80"
         depends_on:
-            - api
+            api:
+                condition: service_healthy
 
     api:
         build:
@@ -17,11 +18,68 @@ services:
         environment:
             ASPNETCORE_ENVIRONMENT: Development
             TASKS_CONNECTION_STRING: "Server=azure-sql-edge,1433;Database=TasksDb;User Id=sa;Password=${MSSQL_SA_PASSWORD:-TaskManager!Dev123};TrustServerCertificate=True;"
+            Seq__ServerUrl: "http://seq:80"
+            Temporal__TargetHost: "temporal:7233"
+            Temporal__Namespace: "default"
+            Temporal__TaskQueue: "tasks-email"
+            Smtp__Host: "mailpit"
+            Smtp__Port: "1025"
+            Smtp__UseSsl: "false"
+            Notifications__Recipient: "${NOTIFICATION_EMAIL:-developer@taskflow.local}"
+            Exceptionless__ApiKey: "${EXCEPTIONLESS_API_KEY:-}"
+            Exceptionless__ServerUrl: "${EXCEPTIONLESS_SERVER_URL:-https://collector.exceptionless.io}"
         ports:
             - "5080:8080"
         depends_on:
             azure-sql-edge:
                 condition: service_healthy
+            mailpit:
+                condition: service_healthy
+            temporal:
+                condition: service_healthy
+            seq:
+                condition: service_started
+
+    seq:
+        image: datalust/seq:2026.1
+        container_name: tasks-seq
+        environment:
+            ACCEPT_EULA: "Y"
+            # Hash for the local-only password documented in README. Override in shared environments.
+            SEQ_FIRSTRUN_ADMINPASSWORDHASH: "${SEQ_ADMIN_PASSWORD_HASH:-QEGkyOxAgnPtUDR6EsejLeY+zaF04io8oK1256XgdcFeAEhW8eO5Io0ecK+5bIpUh9l2fRCDTSVcNmaUJopAocdtQtCTFJnud5UqvVLFpIvG}"
+        ports:
+            - "5341:80"
+        volumes:
+            - seq-data:/data
+
+    temporal:
+        image: temporalio/temporal:1.9.1
+        container_name: tasks-temporal
+        command: server start-dev --ip 0.0.0.0 --db-filename /home/temporal/temporal.db
+        ports:
+            - "7233:7233"
+            - "8233:8233"
+        volumes:
+            - temporal-data:/home/temporal
+        healthcheck:
+            test: ["CMD", "temporal", "operator", "cluster", "health", "--address", "localhost:7233"]
+            interval: 5s
+            timeout: 5s
+            retries: 20
+            start_period: 10s
+
+    mailpit:
+        image: axllent/mailpit:v1.31.2
+        container_name: tasks-mailpit
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+        healthcheck:
+            test: ["CMD", "/mailpit", "readyz"]
+            interval: 5s
+            timeout: 3s
+            retries: 20
+            start_period: 5s
 
     azure-sql-edge:
         image: mcr.microsoft.com/azure-sql-edge:latest
@@ -46,3 +104,5 @@ services:
 
 volumes:
     azure-sql-edge-data:
+    seq-data:
+    temporal-data:

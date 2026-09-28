@@ -9,7 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Exceptionless.AspNetCore" Version="6.2.0" />
+    <PackageReference Include="MailKit" Version="4.18.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
+    <PackageReference Include="Seq.Extensions.Logging" Version="9.0.0" />
+    <PackageReference Include="Temporalio.Extensions.Hosting" Version="1.19.0" />
   </ItemGroup>
 
 </Project>
